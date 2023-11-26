@@ -48,7 +48,7 @@ checkBorder: ;if row index not equal 0 or image_size_X
 	cmp eax, ebx
 	jge isBorder
 	cmp dword[col_index], 0x0
-	jge isBrder
+	jge isBorder
 	mov esp, ebp
 	ret 
 isBorder:
