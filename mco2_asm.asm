@@ -23,9 +23,10 @@ _imgAvgFilter:
 	mov dword[row_index], 0x1; row index
 	mov dword[col_index], 0x1 ;col index
 L1:
+	mov edx, 0
 	call checkBorder ;only add apply filter to the pixels not found in the border
 	add dword[col_index], 0x1
-	cmp edx, 0
+	cmp edx,1 
 	jne average
 	mov eax, [esi]
 	mov [edi], eax
