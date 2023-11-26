@@ -60,13 +60,16 @@ average:
 	add eax, [esi]
 	add eax, [esi+4]
 	add eax, [esi + edx]
-	add eax, [esi - edx]
 	add edx, 4
-	add eax, [esi - edx]
 	add eax, [esi + edx]
 	sub edx, 8
-	add eax, [esi - edx]
 	add eax, [esi + edx]
+	add edx, 4
+	sub esi, edx
+	add eax, [esi]
+	add eax, [esi - 4]
+	add eax, [esi + 4]
+	add esi, edx
 	mov edx, 0
 	idiv ebx
 	mov [edi], eax
