@@ -34,7 +34,7 @@ L1:
 	add edi, 4
 	mov eax, [col_index]
 	cmp eax, [image_size_y]
-	jge resetCol
+	jg resetCol
 	loop L1
 	mov esp, ebp
 	pop ebp
