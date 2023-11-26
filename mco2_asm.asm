@@ -33,6 +33,7 @@ L1:
 	add esi, 4
 	add edi, 4
 	mov eax, [col_index]
+	add eax, 0x1
 	cmp eax, [image_size_y]
 	jg resetCol
 	loop L1
