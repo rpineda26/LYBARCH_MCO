@@ -11,9 +11,12 @@ _imgAvgFilter:
 	mov ebp, esp
 	mov esi, [ebp+8]
 	mov edi, [ebp + 12]
-	mov dword[sampling_window_size], [ebp + 16]
-	mov dword[image_size_x], [ebp + 20]
-	mov dword[image_size_y], [ebp + 24]
+	mov eax, [ebp + 16]
+	mov [sampling_window_size], eax
+	mov eax, [ebp + 20]
+	mov [image_size_x], eax
+	mov eax, [ebp + 24]
+	mov [image_size_y],eax
 	
 	IMUL eax, ebx
 	mov ecx, eax
@@ -24,7 +27,7 @@ L1:
 	add dword[row_index], 0x1
 	add dword[col_index], 0x1
 	cmp edx, 0
-	jne averaged
+	jne average
 	mov eax, [esi]
 	mov [edi], eax
 	add esi, 4
@@ -75,4 +78,5 @@ average:
 	mov [edi], eax
 	add edi, 4
 	add esi, 4
-	loop L1
+	dec ecx
+	jmp L1
