@@ -38,6 +38,7 @@ L1:
 	ret
 checkBorder: ;if row index not equal 0 or image_size_X
 		;if col_index not equal 0 or image_size_y
+	mov ebp, esp
 	mov eax, [row_index]
 	mov ebx, [image_size_x]
 	cmp  eax, ebx
