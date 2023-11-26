@@ -36,7 +36,7 @@ checkBorder: ;if row index not equal 0 or image_size_X
 		;if col_index not equal 0 or image_size_y
 	mov eax, [row_index]
 	mov ebx, [image_size_x]
-	cpm eax, ebx
+	cmp  eax, ebx
 	jge isBorder
 	cmp dword[row_index], 0x0
 	jge isBorder
@@ -55,16 +55,17 @@ isBorder:
 average:
 	mov ebx, [sampling_window_size]
 	imul ebx, ebx
-	mov eax, [esi -4]
+	mov edx, 0x4
+	mov eax, [esi -edx]
 	add eax, [esi]
-	add eax, [esi+4]
+	add eax, [esi+edx]
 	add eax, [esi +1 * ebx]
-	add eax, [esi + 1 * ebx + 4]
-	add eax, [esi + 1 * ebx - 4]
+	add eax, [esi + 1 * ebx + edx]
+	add eax, [esi + 1 * ebx - edx]
 	add eax, [esi - 1* ebx]
-	add eax, [esi - 1 * ebx + 4]
-	add eax, [esi -1 * ebx -4]
-
+	add eax, [esi - 1 * ebx + edx]
+	add eax, [esi -1 * ebx -edx]
+	mov edx, 0
 	idiv ebx
 	mov [edi], eax
 	add edi, 4
