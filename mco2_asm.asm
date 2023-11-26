@@ -13,7 +13,7 @@ _imgAvgFilter:
 	mov edi, [ebp + 12]
 	mov dword[sampling_window_size], [ebp + 16]
 	mov dword[image_size_x], [ebp + 20]
-	mov dword[image_size_y], [ebp + 20]
+	mov dword[image_size_y], [ebp + 24]
 	
 	IMUL eax, ebx
 	mov ecx, eax
