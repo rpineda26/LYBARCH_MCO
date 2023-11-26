@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-extern void vecadd(int n, int* arr1, int* arr2, int*arr3);
 extern void imgAvgFilter(int* input_image, int* filtered_image, int sampling_window_size, int image_size_x,int image_size_y);
 int main(){
 	int i, j,N, sampling_window_size, image_size_x, image_size_y;;
@@ -29,7 +28,7 @@ int main(){
 //display filtered image
 	for(i=0; i< image_size_x;i++){
 		for(j=0;j<image_size_y; j++){
-			printf("%d  ", filtered_image[i*image_size_x+image_size_y]);
+			printf("%d  ", filtered_image[i*image_size_x+j]);
 		}
 		printf("\n");
 	}

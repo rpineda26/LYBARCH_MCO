@@ -33,7 +33,8 @@ L1:
 	add esi, 4
 	add edi, 4
 	loop L1
-	xor eax, eax
+	mov esp, ebp
+	pop ebp
 	ret
 checkBorder: ;if row index not equal 0 or image_size_X
 		;if col_index not equal 0 or image_size_y
@@ -49,11 +50,9 @@ checkBorder: ;if row index not equal 0 or image_size_X
 	jge isBorder
 	cmp dword[col_index], 0x0
 	jge isBorder
-	mov esp, ebp
 	ret 
 isBorder:
 	mov edx, 1
-	mov esp, ebp
 	ret 
 average:
 	mov ebx, [sampling_window_size]
