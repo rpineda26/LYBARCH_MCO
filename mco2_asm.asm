@@ -25,7 +25,10 @@ L1:
 	add dword[col_index], 0x1
 	cmp edx, 0
 	jne averaged
+	mov eax, [esi]
+	mov [edi], eax
 	add esi, 4
+	add edi, 4
 	loop L1
 	xor eax, eax
 	ret
