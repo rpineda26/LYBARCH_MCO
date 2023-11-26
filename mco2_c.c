@@ -6,8 +6,8 @@ int main(){
 	int i, j, sampling_window_size, image_size_x, image_size_y;;
 	int* input_image;
 	int* filtered_image;
-	input_image = (*int)malloc(N*sizeof(*input_image));
-	filtered_image = (*int)malloc(N*sizeof(filtered_image));
+	input_image = (int*)malloc(N*sizeof(*input_image));
+	filtered_image = (int*)malloc(N*sizeof(filtered_image));
 //get input for size of array
 	printf("Enter x number of rows: ");
 	scanf("%d", &image_size_x);
