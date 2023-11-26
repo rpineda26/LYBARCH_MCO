@@ -13,8 +13,8 @@ int main(){
 	scanf("%d", &sampling_window_size);
 	
 	N = image_size_x * image_size_y;
-	int input_image[N]= {0};
-	int filtered_image[N]= {0};
+	int input_image[N];
+	int filtered_image[N];
 //get image input
 	printf("Enter the pixel values for the input image: \n");	
 	for(i=0;i<image_size_x;i++){
