@@ -55,18 +55,18 @@ isBorder:
 average:
 	mov ebx, [sampling_window_size]
 	imul ebx, ebx
-	mov edx, 0x4
+	mov edx, [image_size_x]
 	mov eax, [esi -4]
 	add eax, [esi]
 	add eax, [esi+4]
-	add eax, [esi + ebx]
-	add eax, [esi + ebx + edx]
-	add eax, [esi +  ebx - edx]
-	add eax, [esi - ebx]
-	add ebx, 4
-	add eax, [esi - ebx]
-	sub ebx, 8
-	add eax, [esi - ebx]
+	add eax, [esi + edx]
+	add eax, [esi - edx]
+	add edx, 4
+	add eax, [esi - edx]
+	add eax, [esi + edx]
+	sub edx, 8
+	add eax, [esi - edx]
+	add eax, [esi + edx]
 	mov edx, 0
 	idiv ebx
 	mov [edi], eax
