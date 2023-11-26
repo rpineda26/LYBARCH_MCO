@@ -56,15 +56,17 @@ average:
 	mov ebx, [sampling_window_size]
 	imul ebx, ebx
 	mov edx, 0x4
-	mov eax, [esi -edx]
+	mov eax, [esi -4]
 	add eax, [esi]
-	add eax, [esi+edx]
-	add eax, [esi +1 * ebx]
-	add eax, [esi + 1 * ebx + edx]
-	add eax, [esi + 1 * ebx - edx]
-	add eax, [esi - 1* ebx]
-	add eax, [esi - 1 * ebx + edx]
-	add eax, [esi -1 * ebx -edx]
+	add eax, [esi+4]
+	add eax, [esi + ebx]
+	add eax, [esi + ebx + edx]
+	add eax, [esi +  ebx - edx]
+	add eax, [esi - ebx]
+	add ebx, 4
+	add eax, [esi - ebx]
+	sub ebx, 8
+	add eax, [esi - ebx]
 	mov edx, 0
 	idiv ebx
 	mov [edi], eax
