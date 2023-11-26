@@ -62,7 +62,7 @@ isBorder:
 average:
 	mov ebx, [sampling_window_size]
 	imul ebx, ebx
-	mov edx, [image_size_x]
+	mov edx, [image_size_y]
 	mov eax, [esi -4]
 	add eax, [esi]
 	add eax, [esi+4]
