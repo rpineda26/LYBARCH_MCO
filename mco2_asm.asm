@@ -73,7 +73,7 @@ addRow:
 	mov edx, [col_index]
 	add  edx, ebx
 	mov [add_y], edx
-	cmp [add_x], 0
+	cmp dword [add_x], 0
 	jge  addCol
 	jmp divideNum 
 addCol:	
@@ -86,18 +86,18 @@ addCol:
 	add eax, [esi]
 	add esi, edx
 	
-	dec [add_y]
+	dec dword[add_y]
 	cmp dword[add_y], 0
 	jle backToRow
 	jmp addCol
 backToRow:
-	dec [add_x]
+	dec dword[add_x]
 	jmp addRow
 divideNum:
 	mov ebx, [sampling_window_size]
 	imul ebx, ebx
 	mov edx, 0
-	div eax, ebx
+	idiv eax, ebx
 	shr ebx,1
 	cmp edx, ebx
 	jge round
