@@ -63,6 +63,8 @@ average:
 	mov edx, [row_index]
 	add  edx,ecx
 	mov  [add_x], edx
+	imul edx, [image_size_y]
+	add  esi, edx
 	jmp addRow
 addRow: 
 	mov ebx, [sampling_window_size]
@@ -76,13 +78,9 @@ addRow:
 	jge  addCol
 	jmp divideNum 
 addCol:	
-	mov edx, [add_x]
-	mov ebx, [add_y]
-	imul edx, [image_size_y]
-	add  edx, ebx
+	mov edx, [add_y]
 	imul edx, 4
-	sub esi, edx
-	add eax, [esi]
+	add eax, [esi+edx]
 	add esi, edx
 	dec dword[add_y]
 	mov edx, [sampling_window_size]
@@ -93,6 +91,9 @@ addCol:
 	jle backToRow
 	jmp addCol
 backToRow:
+	mov edx, 4
+	imul edx, [image_size_y]
+	sub esi, edx
 	dec dword[add_x]
 	jmp addRow
 divideNum:
