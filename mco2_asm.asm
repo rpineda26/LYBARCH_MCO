@@ -85,7 +85,6 @@ addCol:
 	mov edx, 4
 	imul edx, ebx
 	add eax, [esi+edx]
-	add esi, edx
 	inc ebx
 	dec dword[add_y]
 	mov edx, [sampling_window_size]
