@@ -18,8 +18,6 @@ _imgAvgFilter:
 	mov ebx, [ebp + 24]
 	mov [image_size_y],ebx
 	
-	IMUL eax, ebx
-	mov ecx, eax
 	mov dword[row_index], 0x1; row index
 	mov dword[col_index], 0x1 ;col index
 L1:
@@ -30,53 +28,86 @@ L1:
 	jne average
 	mov eax, [esi]
 	mov [edi], eax
-	add esi, 4
-	add edi, 4
 	jmp updateCounter
-checkBorder: ;if row index not equal 0 or image_size_X
-		;if col_index not equal 0 or image_size_y
-	mov ebp, esp
+checkBorder:
+	mov ecx, [sampling_window_size]
+	shr ecx, 1
 	mov eax, [row_index]
+	add eax, ecx
 	mov ebx, [image_size_x]
 	cmp  eax, ebx
-	je isBorder
-	cmp dword[row_index], 0x0
-	je isBorder
+	jge isBorder
+	sub eax, ecx
+	cmp eax, ecx
+	jl isBorder
+
 	mov eax, [col_index]
 	mov ebx, [image_size_y]
+	add eax, ecx
 	cmp eax, ebx
-	je isBorder
-	cmp dword[col_index], 0x0
-	je isBorder
+	jge isBorder
+	sub eax, ecx
+	cmp eax, ecx
+	jl isBorder
 	ret 
+	mov eax
 isBorder:
 	mov edx, 1
 	ret 
 average:
+	mov ecx, [sampling_window_size]
+	shr ecx
+	jmp addRow
+	; results
+	mov [edi], eax
+	jmp updateCounter
+addRow: 
+	mov eax, 0 
+	mov edx, [image_size_y]
+	imul edx, ecx
+	imul edx, 4
+	add esi, edx
+	sub esi, 4
+	add eax, [esi]
+	add esi, 4
+	add eax, [esi +4]
+	add eax, [esi]
+	sub esi, edx
+	sub esi, edx
+	sub esi, 4
+ 	add eax, [esi]
+	add esi, 4
+	add eax, [esi]
+	add eax [esi  + 4]
+	add esi, edx
+	dec ecx
+	cmp ecx, 0
+	jg addRow
+	add eax, [esi]
+	add eax, [esi + 4]
+	sub esi, 4
+	add eax, [esi]
+	add esi, 4
+	jmp divideNum
+divideNum:
 	mov ebx, [sampling_window_size]
 	imul ebx, ebx
-	mov edx, [image_size_y]
-	mov eax, [esi -4]
-	add eax, [esi]
-	add eax, [esi+4]
-	add eax, [esi + edx]
-	add edx, 4
-	add eax, [esi + edx]
-	sub edx, 8
-	add eax, [esi + edx]
-	add edx, 4
-	sub esi, edx
-	add eax, [esi]
-	add eax, [esi - 4]
-	add eax, [esi + 4]
-	add esi, edx
 	mov edx, 0
-	idiv ebx
+	idiv eax, ebx
+	shr ebx,1
+	cmp edx, ebx
+	jge round
+	jmp output
+round:
+	inc eax
+	jmp output
+output:
 	mov [edi], eax
+	jmp updateCounter	
+	
+updateCounter:
 	add edi, 4
 	add esi, 4
-	jmp updateCounter
-updateCounter:
 	inc dword [col_index]
 	mov eax, [col_index]
 	cmp eax, [image_size__y]
