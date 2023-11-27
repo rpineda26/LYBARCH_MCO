@@ -64,6 +64,7 @@ average:
 	add  edx,ecx
 	mov  [add_x], edx
 	imul edx, [image_size_y]
+	imul edx, 4
 	add  esi, edx
 	jmp addRow
 addRow: 
@@ -72,6 +73,8 @@ addRow:
 	mov edx, [col_index]
 	add  edx, ebx
 	mov [add_y], edx
+	imul edx, 4
+	sub esi, edx
 	mov edx, [row_index]
 	sub edx, ebx
 	cmp [add_x], edx
@@ -94,10 +97,22 @@ backToRow:
 	mov edx, 4
 	imul edx, [image_size_y]
 	sub esi, edx
+	mov edx, [sampling_window_size]
+	shr edx, 1
+	imul edx, 4
+	add esi, 4
 	dec dword[add_x]
 	jmp addRow
 divideNum:
+	mov edx, [image_size_y]
 	mov ebx, [sampling_window_size]
+	shr ebx, 1
+	imul edx, ebx
+	imul edx, 4
+	imul ebx, 4
+	add esi, ebx
+	add esi, edx
+	shl ebx, 1
 	imul ebx, ebx
 	mov edx, 0
 	idiv  ebx
