@@ -21,12 +21,11 @@ _imgAvgFilter:
 	mov ebx, [ebp + 24]
 	mov [image_size_y],ebx
 	
-	mov dword[row_index], 0x1; row index
-	mov dword[col_index], 0x1 ;col index
+	mov dword[row_index], 0x0; row index
+	mov dword[col_index], 0x0 ;col index
 L1:
 	mov edx, 0
 	call checkBorder ;only add apply filter to the pixels not found in the border
-	add dword[col_index], 0x1
 	cmp edx,1 
 	jne average
 	mov eax, [esi]
@@ -35,18 +34,17 @@ L1:
 checkBorder:
 	mov ecx, [sampling_window_size]
 	shr ecx, 1
+
 	mov eax, [row_index]
-	dec eax
 	add eax, ecx
 	mov ebx, [image_size_x]
 	cmp  eax, ebx
-	jge isBorder
+	jg isBorder
 	sub eax, ecx
 	cmp eax, ecx
 	jl isBorder
 
 	mov eax, [col_index]
-	dec eax
 	mov ebx, [image_size_y]
 	add eax, ecx
 	cmp eax, ebx
