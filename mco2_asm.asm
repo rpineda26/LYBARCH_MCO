@@ -36,6 +36,7 @@ checkBorder:
 	mov ecx, [sampling_window_size]
 	shr ecx, 1
 	mov eax, [row_index]
+	dec eax
 	add eax, ecx
 	mov ebx, [image_size_x]
 	cmp  eax, ebx
@@ -45,6 +46,7 @@ checkBorder:
 	jl isBorder
 
 	mov eax, [col_index]
+	dec eax
 	mov ebx, [image_size_y]
 	add eax, ecx
 	cmp eax, ebx
