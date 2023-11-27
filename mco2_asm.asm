@@ -57,6 +57,7 @@ isBorder:
 	mov edx, 1
 	ret 
 average:
+	mov eax, 0
 	mov ecx, [sampling_window_size]
 	shr ecx, 1
 	mov edx, [row_index]
@@ -66,13 +67,12 @@ average:
 addRow: 
 	mov ebx, [sampling_window_size]
 	shr ebx, 1
-	mov ecx, ebx
 	mov edx, [col_index]
 	add  edx, ebx
 	mov [add_y], edx
 	mov edx, [row_index]
 	sub edx, ebx
-	cmp dword[add_x], edx
+	cmp [add_x], edx
 	jge  addCol
 	jmp divideNum 
 addCol:	
@@ -89,7 +89,7 @@ addCol:
 	shr edx, 1
 	mov ecx, [col_index]
 	sub ecx, edx
-	cmp dword[add_y], ecx
+	cmp [add_y], ecx
 	jle backToRow
 	jmp addCol
 backToRow:
