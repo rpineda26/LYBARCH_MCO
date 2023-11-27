@@ -79,7 +79,7 @@ average:
 updateCounter:
 	inc dword [col_index]
 	mov eax, [col_index]
-	cmp eax, [image_size__y]
+	cmp eax, [image_size_y]
 	jg resetCol
 	jmp L1
 	
