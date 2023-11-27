@@ -32,14 +32,7 @@ L1:
 	mov [edi], eax
 	add esi, 4
 	add edi, 4
-	inc dword[col_index]
-	mov eax, [col_index]
-	cmp eax, [image_size_y]
-	jg resetCol
-	loop L1
-	mov esp, ebp
-	pop ebp
-	ret
+	jmp updateCounter
 checkBorder: ;if row index not equal 0 or image_size_X
 		;if col_index not equal 0 or image_size_y
 	mov ebp, esp
@@ -82,10 +75,23 @@ average:
 	mov [edi], eax
 	add edi, 4
 	add esi, 4
-	dec ecx
+	jmp updateCounter
+updateCounter:
+	inc dword [col_index]
+	mov eax, [col_index]
+	cmp eax, [image_index_y]
+	jg resetCol
 	jmp L1
-resetCol: 
+	
+resetCol:
 	mov dword[col_index], 0x1
 	add dword[row_index], 0x1
-	dec ecx
+	mov eax, [image_size_x]
+	cmp [row_index], eax
+	jg terminate
 	jmp L1
+
+terminate: 
+	mov esp, ebp
+	pop ebp
+	ret
