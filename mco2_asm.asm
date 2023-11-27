@@ -46,15 +46,15 @@ checkBorder: ;if row index not equal 0 or image_size_X
 	mov eax, [row_index]
 	mov ebx, [image_size_x]
 	cmp  eax, ebx
-	jge isBorder
+	je isBorder
 	cmp dword[row_index], 0x0
-	jge isBorder
+	je isBorder
 	mov eax, [col_index]
 	mov ebx, [image_size_y]
 	cmp eax, ebx
-	jge isBorder
+	je isBorder
 	cmp dword[col_index], 0x0
-	jge isBorder
+	je isBorder
 	ret 
 isBorder:
 	mov edx, 1
