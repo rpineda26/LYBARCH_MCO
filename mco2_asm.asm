@@ -5,6 +5,9 @@ image_size_y: dd 0
 sampling_window_size: dd 0
 row_index: dd 0
 col_index: dd 0
+add_x: dd 0
+add_y: dd 0
+offset: dd 0
 segment .text
 _imgAvgFilter:
 	push ebp
@@ -50,50 +53,51 @@ checkBorder:
 	cmp eax, ecx
 	jl isBorder
 	ret 
-	mov eax
 isBorder:
 	mov edx, 1
 	ret 
 average:
 	mov ecx, [sampling_window_size]
-	shr ecx
+	shr ecx, 1
+	mov edx, [row_index]
+	add  edx,ecx
+	mov  [add_x], edx
 	jmp addRow
 	; results
 	mov [edi], eax
 	jmp updateCounter
 addRow: 
-	mov eax, 0 
-	mov edx, [image_size_y]
-	imul edx, ecx
+	mov ebx, [sampling_window_size]
+	shr ebx, 1
+	mov ecx, ebx
+	mov edx, [col_index]
+	add  edx, ebx
+	mov [add_y], edx
+	cmp [add_x], 0
+	jge  addCol
+	jmp divideNum 
+addCol:	
+	mov edx, [add_x]
+	mov ebx, [add_y]
+	imul edx, [image_size_y]
+	add  edx, ebx
 	imul edx, 4
-	add esi, edx
-	sub esi, 4
-	add eax, [esi]
-	add esi, 4
-	add eax, [esi +4]
-	add eax, [esi]
 	sub esi, edx
-	sub esi, edx
-	sub esi, 4
- 	add eax, [esi]
-	add esi, 4
 	add eax, [esi]
-	add eax [esi  + 4]
 	add esi, edx
-	dec ecx
-	cmp ecx, 0
-	jg addRow
-	add eax, [esi]
-	add eax, [esi + 4]
-	sub esi, 4
-	add eax, [esi]
-	add esi, 4
-	jmp divideNum
+	
+	dec [add_y]
+	cmp dword[add_y], 0
+	jle backToRow
+	jmp addCol
+backToRow:
+	dec [add_x]
+	jmp addRow
 divideNum:
 	mov ebx, [sampling_window_size]
 	imul ebx, ebx
 	mov edx, 0
-	idiv eax, ebx
+	div eax, ebx
 	shr ebx,1
 	cmp edx, ebx
 	jge round
