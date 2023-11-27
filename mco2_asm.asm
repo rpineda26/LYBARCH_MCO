@@ -39,7 +39,7 @@ checkBorder:
 	add eax, ecx
 	mov ebx, [image_size_x]
 	cmp  eax, ebx
-	jg isBorder
+	jge isBorder
 	sub eax, ecx
 	cmp eax, ecx
 	jl isBorder
