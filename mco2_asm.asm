@@ -15,8 +15,8 @@ _imgAvgFilter:
 	mov [sampling_window_size], eax
 	mov eax, [ebp + 20]
 	mov [image_size_x], eax
-	mov eax, [ebp + 24]
-	mov [image_size_y],eax
+	mov ebx, [ebp + 24]
+	mov [image_size_y],ebx
 	
 	IMUL eax, ebx
 	mov ecx, eax
