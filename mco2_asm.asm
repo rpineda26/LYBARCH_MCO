@@ -32,8 +32,8 @@ L1:
 	mov [edi], eax
 	add esi, 4
 	add edi, 4
+	inc dword[col_index]
 	mov eax, [col_index]
-	add eax, 0x1
 	cmp eax, [image_size_y]
 	jg resetCol
 	loop L1
