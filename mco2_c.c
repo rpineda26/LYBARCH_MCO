@@ -19,7 +19,7 @@ int main(){
 	for(i=0;i<image_size_x;i++){
 		for(j = 0; j< image_size_y; j++){
 			printf("pixel[%d][%d]: ",i,j);
-			scanf("%d", &input_image[i*image_size_x +j]);
+			scanf("%d", &input_image[i*image_size_y +j]);
 		}
 	}
 
@@ -28,7 +28,7 @@ int main(){
 //display filtered image
 	for(i=0; i< image_size_x;i++){
 		for(j=0;j<image_size_y; j++){
-			printf("%d  ", filtered_image[i*image_size_x+j]);
+			printf("%d  ", filtered_image[i*image_size_y+j]);
 		}
 		printf("\n");
 	}
