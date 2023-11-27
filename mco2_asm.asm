@@ -63,9 +63,6 @@ average:
 	add  edx,ecx
 	mov  [add_x], edx
 	jmp addRow
-	; results
-	mov [edi], eax
-	jmp updateCounter
 addRow: 
 	mov ebx, [sampling_window_size]
 	shr ebx, 1
@@ -73,7 +70,9 @@ addRow:
 	mov edx, [col_index]
 	add  edx, ebx
 	mov [add_y], edx
-	cmp dword[add_x], 0
+	mov edx, [row_index]
+	sub edx, ebx
+	cmp dword[add_x], edx
 	jge  addCol
 	jmp divideNum 
 addCol:	
@@ -85,9 +84,12 @@ addCol:
 	sub esi, edx
 	add eax, [esi]
 	add esi, edx
-	
 	dec dword[add_y]
-	cmp dword[add_y], 0
+	mov edx, [sampling_window_size]
+	shr edx, 1
+	mov ecx, [col_index]
+	sub ecx, edx
+	cmp dword[add_y], ecx
 	jle backToRow
 	jmp addCol
 backToRow:
