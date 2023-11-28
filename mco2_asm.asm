@@ -69,6 +69,9 @@ average:
 	sub  esi, ecx
 	sub esi, ebx
 	jmp addRow
+	; results
+	mov [edi], eax
+	jmp updateCounter
 addRow: 
 	mov ebx, [sampling_window_size]
 	shr ebx, 1
@@ -76,13 +79,12 @@ addRow:
 	mov edx, [col_index]
 	sub  edx, ebx
 	mov [add_y], edx
-	mov edx, [row_index]
-	sub edx, ebx
-	cmp dword[add_x], edx
+	cmp dword[add_x], 0
 	jge  addCol
 	jmp divideNum 
 addCol:		
 	add eax, [esi]
+<<<<<<< HEAD
 	inc ebx
 	inc  dword[add_y]
 	mov edx, [sampling_window_size]
@@ -90,6 +92,12 @@ addCol:
 	mov ecx, [col_index]
 	sub ecx, edx
 	cmp dword[add_y], ecx
+=======
+	add esi, edx
+	
+	dec dword[add_y]
+	cmp dword[add_y], 0
+>>>>>>> parent of cd38696 (sdaf)
 	jle backToRow
 	jmp addCol
 backToRow:
