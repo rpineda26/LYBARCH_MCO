@@ -75,6 +75,7 @@ addRow:
 	mov [add_y], edx
 	imul ebx, 4
 	sub esi, ebx
+	shr ebx, 2
 	mov edx, [row_index]
 	add edx, ebx
 	mov ebx, 0
