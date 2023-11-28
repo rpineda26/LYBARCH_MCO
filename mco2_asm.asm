@@ -79,7 +79,9 @@ addRow:
 	mov edx, [col_index]
 	sub  edx, ebx
 	mov [add_y], edx
-	cmp dword[add_x], 0
+	mov edx, [row_index]
+	sub edx, ebx
+	cmp dword[add_x], edx
 	jge  addCol
 	jmp divideNum 
 addCol:		
@@ -92,12 +94,6 @@ addCol:
 	mov ecx, [col_index]
 	sub ecx, edx
 	cmp dword[add_y], ecx
-=======
-	add esi, edx
-	
-	dec dword[add_y]
-	cmp dword[add_y], 0
->>>>>>> parent of cd38696 (sdaf)
 	jle backToRow
 	jmp addCol
 backToRow:
