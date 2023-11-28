@@ -93,7 +93,7 @@ addCol:
 	mov ecx, [col_index]
 	add ecx, edx
 	cmp [add_y], ecx
-	jle backToRow
+	jg backToRow
 	jmp addCol
 backToRow:
 	mov edx, 4
