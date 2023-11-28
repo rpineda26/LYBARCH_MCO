@@ -61,49 +61,48 @@ average:
 	mov ecx, [sampling_window_size]
 	shr ecx, 1
 	mov edx, [row_index]
-	add  edx,ecx
+	sub  edx,ecx
 	mov  [add_x], edx
 	imul ecx, 4	
 	imul ecx, [image_size_y]
-	add  esi, ecx
+	sub  esi, ecx
 	jmp addRow
 addRow: 
 	mov ebx, [sampling_window_size]
 	shr ebx, 1
 	mov edx, [col_index]
-	add  edx, ebx
+	sub  edx, ebx
 	mov [add_y], edx
 	imul ebx, 4
 	sub esi, ebx
-	shr ebx, 2
 	mov edx, [row_index]
-	sub edx, ebx
+	add edx, ebx
 	mov ebx, 0
 	cmp [add_x], edx
-	jge  addCol
+	jle  addCol
 	jmp divideNum 
 addCol:		
 	mov edx, 4
 	imul edx, ebx
 	add eax, [esi+edx]
 	inc ebx
-	dec dword[add_y]
+	inc  dword[add_y]
 	mov edx, [sampling_window_size]
 	shr edx, 1
 	mov ecx, [col_index]
-	sub ecx, edx
+	add ecx, edx
 	cmp [add_y], ecx
 	jle backToRow
 	jmp addCol
 backToRow:
 	mov edx, 4
 	imul edx, [image_size_y]
-	sub esi, edx
+	add  esi, edx
 	mov edx, [sampling_window_size]
 	shr edx, 1
 	imul edx, 4
 	add esi, edx
-	dec dword[add_x]
+	inc dword[add_x]
 	jmp addRow
 divideNum:
 	mov edx, [image_size_y]
@@ -112,8 +111,8 @@ divideNum:
 	imul edx, ebx
 	imul edx, 4
 	imul ebx, 4
-	add esi, ebx
-	add esi, edx
+	add  esi, ebx
+	sub esi, edx
 	shl ebx, 1
 	imul ebx, ebx
 	mov edx, 0
