@@ -57,65 +57,57 @@ isBorder:
 	mov edx, 1
 	ret 
 average:
-	mov ecx, [sampling_window_size]
-	shr ecx, 1
-	mov ebx, ecx
-	mov edx, [row_index]
-	sub  edx,ecx
-	mov  [add_x], edx
-	imul ecx, [image_size_y]
-	imul ecx, 4
-	imul ebx, 4
-	sub  esi, ecx
-	sub esi, ebx
-	jmp addRow
-	; results
-	mov [edi], eax
-	jmp updateCounter
-addRow: 
+	mov eax, 0
 	mov ebx, [sampling_window_size]
 	shr ebx, 1
-	mov ecx, ebx
-	mov edx, [col_index]
-	sub  edx, ebx
-	mov [add_y], edx
 	mov edx, [row_index]
 	sub edx, ebx
-	cmp dword[add_x], edx
-	jge  addCol
-	jmp divideNum 
+	mov [add_x], edx
+	imul ecx, 4
+	sub esi, ecx
+	imul ecx, [image_size_y]
+	sub esi, ecx
+	jmp addRow
+addRow: 
+	mov ebx, [sampling_window_size]
+	shr ebx,1 
+	mov edx, [col_index]
+	sub edx, ebx
+	mov [add_y],edx
+	mov edx, [row_index]
+	add edx, ebx
+	cmp [add_x], edx
+	jle addCol
+	jmp divideNum
 addCol:		
 	add eax, [esi]
-<<<<<<< HEAD
-	inc ebx
-	inc  dword[add_y]
-	mov edx, [sampling_window_size]
-	shr edx, 1
+	add esi, 4
+	inc dword[add_y]
 	mov ecx, [col_index]
-	sub ecx, edx
-	cmp dword[add_y], ecx
-	jle backToRow
+	mov ebx, [sampling_window_size]
+	add ebx, ecx
+	cmp [add_y], ebx
+	jg backToRow
 	jmp addCol
+
 backToRow:
 	inc dword[add_x]
 	jmp addRow
 divideNum:
-	mov edx, [image_size_y]
 	mov ebx, [sampling_window_size]
 	shr ebx, 1
-	imul edx, ebx
+	mov edx, ebx
+	imul edx, [image_size_y]
+	add edx, ebx
 	imul edx, 4
-	imul ebx, 4
-	add  esi, ebx
 	sub esi, edx
-	shl ebx, 1
-	imul ebx, ebx
 	mov edx, 0
-	idiv  ebx
-	shr ebx,1
+	idiv ebx
+	shr ebx, 1
 	cmp edx, ebx
 	jge round
 	jmp output
+	
 round:
 	inc eax
 	jmp output
