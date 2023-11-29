@@ -1,6 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 extern void imgAvgFilter(int* input_image, int* filtered_image, int sampling_window_size, int image_size_x,int image_size_y);
+void displayImg(int* arr, int x, int y){
+	int i, j;
+	for(i=0; i<x;i++){
+		for(j=0;j<y; j++){
+			printf("%d  ", arr[i*y+j]);
+		}
+		printf("\n");
+	}
+}
 int main(){
 	int i, j,N, sampling_window_size, image_size_x, image_size_y;;
 //get input for size of array
@@ -22,15 +31,29 @@ int main(){
 			scanf("%d", &input_image[i*image_size_y +j]);
 		}
 	}
+	printf("\n\n");
 
+    printf("           __________\n");
+    printf("         .'----------`.\n");
+    printf("         | .--------. |\n");
+    printf("         | |########| |       __________\n");
+    printf("         | |########| |      /__________\\\n");
+    printf(".--------| `--------' |------|    --=-- |-------------.\n");
+    printf("|        `----,-.-----'      |o ======  |             |\n");
+    printf("|       ______|_|_______     |__________|             |\n");
+    printf("|      /  %%%%%%%%%%%%  \\                             |\n");
+    printf("|     /  %%%%%%%%%%%%%%  \\                            |\n");
+    printf("|     ^^^^^^^^^^^^^^^^^^^^                            |\n");
+    printf("+-----------------------------------------------------+\n");
+    printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+
+	printf("---------------------INPUT IMAGE-----------------------\n\n");
+	displayImg(input_image, image_size_x, image_size_y);
+	printf("\n\n");
 	imgAvgFilter(input_image,filtered_image,sampling_window_size,image_size_x, image_size_y);
+	printf("--------------------FILTERED IMAGE---------------------\n");
 
-//display filtered image
-	for(i=0; i< image_size_x;i++){
-		for(j=0;j<image_size_y; j++){
-			printf("%d  ", filtered_image[i*image_size_y+j]);
-		}
-		printf("\n");
-	}
+	displayImg(filtered_image, image_size_x, image_size_y);
+
 	return 0;
 }

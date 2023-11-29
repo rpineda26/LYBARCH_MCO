@@ -34,7 +34,6 @@ L1:
 checkBorder:
 	mov ecx, [sampling_window_size]
 	shr ecx, 1
-
 	mov eax, [row_index]
 	add eax, ecx
 	mov ebx, [image_size_x]
@@ -43,7 +42,6 @@ checkBorder:
 	sub eax, ecx
 	cmp eax, ecx
 	jl isBorder
-
 	mov eax, [col_index]
 	mov ebx, [image_size_y]
 	add eax, ecx
@@ -57,59 +55,57 @@ isBorder:
 	mov edx, 1
 	ret 
 average:
-	mov eax, 0
-	mov ebx, [sampling_window_size]
-	shr ebx, 1
-	mov edx, [row_index]
-	sub edx, ebx
-	mov [add_x], edx
-	imul ecx, 4
-	sub esi, ecx
-	imul ecx, [image_size_y]
-	sub esi, ecx
+        ;initialize to first element in the sampling window
+        mov eax, 0
+        push esi
+        mov ebx, [sampling_window_size]
+        shr ebx, 1
+        mov dword[add_x], 0
+        ;first col, same row pointer
+        imul ebx, 4
+        sub esi, ebx
+        ;first row first col pointer
+        imul ebx, [image_size_y]
+        sub esi, ebx
 	jmp addRow
 addRow: 
 	mov ebx, [sampling_window_size]
-	shr ebx,1 
-	mov edx, [col_index]
-	sub edx, ebx
-	mov [add_y],edx
-	mov edx, [row_index]
-	add edx, ebx
-	cmp [add_x], edx
-	jle addCol
+	mov dword[add_y],0
+	cmp [add_x], ebx
+	jl addCol
 	jmp divideNum
 addCol:		
-	add eax, [esi]
-	add esi, 4
+        ;add all elements in a row in the sampling window
+        mov edx, [add_x]
+        imul edx,[image_size_y]
+        add edx, [add_y]
+        imul edx, 4
+	add eax, [esi + edx]
 	inc dword[add_y]
-	mov ecx, [col_index]
-	mov ebx, [sampling_window_size]
-	add ebx, ecx
+        mov ebx, [sampling_window_size]
 	cmp [add_y], ebx
-	jg backToRow
-	jmp addCol
+	jl addCol
+	jmp backToRow
 
 backToRow:
+        ;offset to next row in the sampling window
 	inc dword[add_x]
 	jmp addRow
+
 divideNum:
-	mov ebx, [sampling_window_size]
-	shr ebx, 1
-	mov edx, ebx
-	imul edx, [image_size_y]
-	add edx, ebx
-	imul edx, 4
-	sub esi, edx
+        pop esi
 	mov edx, 0
-	idiv ebx
-	shr ebx, 1
-	cmp edx, ebx
-	jge round
+        mov ebx, [sampling_window_size]
+        imul ebx,ebx
+        mov ecx, ebx
+        shr ecx, 1
+        add eax, ecx
+	idiv ebx        
+	cmp edx, ecx
+	jle round
 	jmp output
-	
 round:
-	inc eax
+	; eax
 	jmp output
 output:
 	mov [edi], eax
